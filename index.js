@@ -1,17 +1,14 @@
-const express = require('express')
-const app  = express();
-const cors = require('cors')
 require('dotenv').config();
-const port = process.env.PORT || 5000;
+const express = require('express')
+const app = express();
+const cors = require('cors')
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
+const port = process.env.PORT || 5000;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bfg6ad4.mongodb.net/?retryWrites=true&w=majority`;
 
 app.use(cors())
 app.use(express.json())
-
-
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bfg6ad4.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -22,7 +19,10 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function run() {
+const DB = client.db("assignment12");
+const CLASS = DB.collection('class');
+
+async function main() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
@@ -34,13 +34,22 @@ async function run() {
     // await client.close();
   }
 }
-run().catch(console.dir);
+main().catch(console.error);
 
 
-app.get('/', (req, res)=>{
-    res.send('assingment12')
+app.get('/', (req, res) => {
+  res.send('assingment12')
 })
 
-app.listen(port, ()=>{
-    console.log(`assingment12  is on port ${port}`)
+app.get('/class', async (req, res) => {
+  try {
+    res.json(await CLASS.find({}).toArray())
+  } catch (error) {
+    res.statusCode = 501;
+    res.json({ error: 'Server error', reason: error?.message })
+  }
+})
+
+app.listen(port, () => {
+  console.log(`assingment12  is on port ${port}`)
 })
