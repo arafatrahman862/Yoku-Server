@@ -15,7 +15,7 @@ export function auth(req, res, next) {
     if (err) {
       return res.status(403).json({ error: "Invalid token" });
     }
-    req.decoded = data;
+    req.authData = data;
     next();
   });
 }

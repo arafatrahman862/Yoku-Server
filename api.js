@@ -2,10 +2,10 @@ export const ENDPOINT = {
     location: "http://localhost:8080",
 };
 
-async function sendJson(uri, payload) {
+async function sendJson(uri, payload, headers = {}) {
     let res = await fetch(ENDPOINT.location + uri, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify(payload),
     });
     let data = await res.json();
@@ -25,6 +25,12 @@ export async function register({ email, password }) {
     return { token }
 }
 
-export function classData() { 
-
+export async function promoteUser({ email, role }, authToken) {
+    let { message } = await sendJson(
+        "/admin/promote",
+        { email, role },
+        { authorization: 'Token: ' + authToken }
+    );
+    return { message }
 }
+
