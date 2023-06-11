@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
 import { JWT_SECRET } from "./config.js";
 
-export function sign(payload) {
+export function jwtSign(payload) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '3 days' });
 }
 

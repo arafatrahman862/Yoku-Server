@@ -1,11 +1,11 @@
 import express from "express";
-import { CLASS } from "../src/database.js";
+import { USER } from "../src/database.js";
 
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
     try {
-        res.json(await CLASS.find({}).toArray())
+        
     } catch (err) {
         next(err);
     }

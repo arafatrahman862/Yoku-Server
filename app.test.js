@@ -1,13 +1,11 @@
-let url = 'http://localhost:' + 8080;
+import { ENDPOINT, login, register } from "./api.js";
 
-async function main() {
-    let res = await fetch(url + '/admin/login', { method: 'POST', body: JSON.stringify({
-        email: "Sakib@gamil.com",
-        password: "12345678"
-    }) });
-    let data = await res.json();
-    console.log(data);
-}
+ENDPOINT.location = "http://localhost:8080"
 
-console.clear()
-main().catch(console.error)
+const adminData = { email: "test@gmail.com", password: "1234" };
+
+login(adminData).catch(err => console.log("Login without register"))
+register(adminData).then(data => console.log("Register:", data))
+register(adminData).catch(err => console.log("Register Again Failed1"))
+login(adminData).then(data => console.log("Login sussful", data))
+

@@ -20,3 +20,5 @@ console.log("Pinged your deployment. You successfully connected to MongoDB!");
 export const DB = client.db(MONGO_DATABASE_NAME);
 export const CLASS = DB.collection("class");
 export const ADMIN = DB.collection("admin");
+export const USER = DB.collection("user");
+export const NEW_CLASS = DB.collection("newClass");
