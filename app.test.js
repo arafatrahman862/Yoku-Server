@@ -1,10 +1,10 @@
-require('dotenv').config();
-const port = process.env.PORT || 5000;
-
-let url = 'http://localhost:' +  port;
+let url = 'http://localhost:' + 8080;
 
 async function main() {
-    let res = await fetch(url + '/class');
+    let res = await fetch(url + '/admin/login', { method: 'POST', body: JSON.stringify({
+        email: "Sakib@gamil.com",
+        password: "12345678"
+    }) });
     let data = await res.json();
     console.log(data);
 }
