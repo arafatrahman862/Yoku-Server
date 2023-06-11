@@ -1,11 +1,11 @@
-import express from "express";
-import { USER } from "../src/database.js";
+import express, { json } from "express";
+import { ADMIN } from "../src/database.js";
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (_req, res, next) => {
     try {
-        
+        res.json(await ADMIN.find({}).toArray())
     } catch (err) {
         next(err);
     }
