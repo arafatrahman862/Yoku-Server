@@ -4,6 +4,12 @@ import { jwtSign, auth } from "../src/auth.js";
 import { HttpError } from "../src/error.js";
 
 const router = express.Router();
+const roles = ['admin', 'instructor']
+
+function checkRole(role) {
+    if (!roles.includes(role))
+        throw new HttpError(403, `Expected role: 'admin' or 'instructor', But got ${role}`);
+}
 
 router.post('/login', async (req, res, next) => {
     try {
@@ -21,10 +27,12 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/register', async (req, res, next) => {
     try {
-        const { email, password, ...rest } = req.body;
+        const { email, password, role, ...rest } = req.body;
         // TODO: Verify email and pass
-        await ADMIN.insertOne({ _id: email, password, role: "admin", ...rest });
-        res.json({ token: jwtSign({ email, role: "admin" }) })
+        checkRole(role);
+
+        await ADMIN.insertOne({ _id: email, password, role, ...rest });
+        res.json({ token: jwtSign({ email, role }) })
     } catch (err) {
         next(err);
     }
@@ -36,9 +44,7 @@ router.post('/promote', auth, async (req, res, next) => {
             throw new HttpError(401, "You are not admin.")
         }
         const { email, role } = req.body;
-        let roles = ['admin', 'instructor']
-        if (!roles.includes(role))
-            throw new HttpError(403, `Expected role: 'admin' or 'instructor', But got ${role}`)
+        checkRole(role);
 
         await ADMIN.findOneAndUpdate({ _id: email }, { $set: { role } });
         res.json({ message: 'Operation successful' })
