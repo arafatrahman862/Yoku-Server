@@ -11,4 +11,13 @@ router.get('/', async (req, res, next) => {
     }
 })
 
+router.post('/add', async (req, res, next) => {
+    try {
+        await CLASS.insertOne(req.body);
+        res.json({ message: 'Done' })
+    } catch (err) {
+        next(err);
+    }
+})
+
 export default router;
