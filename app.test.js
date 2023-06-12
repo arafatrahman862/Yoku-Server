@@ -17,7 +17,7 @@ const adminData = { email: "adminn@gmail.com", password: "1234", role: 'admin' }
 await assert.rejects(() => api.login(adminData), 'Login without register should failed');
 console.log('Admin Register successful:', await api.register(adminData));
 await assert.rejects(() => api.register(adminData), 'Register again  should failed');
-let adminAuth = await api.login(adminData);
+const adminAuth = await api.login(adminData);
 console.log('Admin Login successful:', await api.login(adminData));
 
 // ------------------------------------------------------------------
@@ -25,7 +25,7 @@ console.log('Admin Login successful:', await api.login(adminData));
 await assert.rejects(() => api.promoteUser({ email: '', role: '' }, ""), 'Should failed: Because of invalid admin auth token');
 
 const instructorData = { email: "instructor@gmail.com", password: "1234", role: 'instructor' };
-let instructorAuth = await api.register(instructorData);
+const instructorAuth = await api.register(instructorData);
 console.log("Instructor promoted to admin! ", await api.promoteUser({ email: instructorData.email, role: 'admin' }, adminAuth.token));
 
 // ------------------------------------------------------------------
@@ -41,3 +41,4 @@ const classData = {
     price: 22
 };
 await api.addClass(classData, instructorAuth.token)
+console.log('New class added');

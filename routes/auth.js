@@ -35,7 +35,12 @@ router.post('/register', async (req, res, next) => {
         checkRole(role, ['admin', 'instructor', 'student']);
 
         if (role == 'student') {
-            await STUDENT.insertOne({ ...data, _id: email, password, });
+            await STUDENT.insertOne({
+                ...data,
+                _id: email,
+                password,
+                joined_classes: []
+            });
         } else {
             await ADMIN_OR_INSTRUCTOR.insertOne({ ...data, _id: email, password, role, });
         }
