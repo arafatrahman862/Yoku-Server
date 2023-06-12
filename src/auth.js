@@ -13,7 +13,7 @@ export function auth(req, res, next) {
   }
   jwt.verify(token, JWT_SECRET, (err, data) => {
     if (err) {
-      return res.status(403).json({ error: "Invalid token" });
+      return res.status(403).json({ error: "Invalid JWT auth token" });
     }
     req.authData = data;
     next();
