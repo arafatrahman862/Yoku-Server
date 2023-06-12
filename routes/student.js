@@ -17,6 +17,16 @@ router.get('/classes', auth, async (req, res, next) => {
     }
 })
 
+router.post('/remove/class', auth, async (req, res, next) => {
+    try {
+        const { class_id } = req.body;
+        await STUDENT.updateOne({ _id: req.authData.email }, { $pull: { joined_classes: class_id } });
+        res.json({ message: 'done' })
+    } catch (err) {
+        next(err)
+    }
+})
+
 router.post('/join', auth, async (req, res, next) => {
     try {
         const { class_id } = req.body;
